@@ -26,13 +26,18 @@ $app->post('/add-pup', function($req, $res, $args){
 
 $app->post('/update-pup', function($req, $res, $args){
     $post = $req->getParsedBody();
-    $updatepup = Pup::where('name', $post['name']);
-    //->update(['name' => $post['new-name'], 'age' => $post['age'], 'breed' => $post['breed']]);
+    $updatepup = Pup::where('name', $post['name'])->first(); //->update(['name' => $post['new-name'], 'age' => $post['age'], 'breed' => $post['breed']]);
+	$updatepup->name = $post['new-name'];
+	$updatepup->age = $post['age'];
+	$updatepup->breed = $post['breed'];
+	$updatepup->save();
+    return $res->withJson($updatepup);
 });
 
 $app->post('/delete-pup', function($req, $res, $args){
     $post = $req->getParsedBody();
     $deletepup = Pup::where('name', $post['name'])->delete();
+    return $res->withJson($deletepup);
 });
 
 ?>
